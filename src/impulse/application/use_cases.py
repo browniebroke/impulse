@@ -41,4 +41,5 @@ def draw_graph(module_name: str, format: str) -> None:
             dot.edge(downstream, upstream)
 
     source_filename = tempfile.mkstemp()[1]
+    print(dot.source)
     dot.view(filename=source_filename, cleanup=True)
