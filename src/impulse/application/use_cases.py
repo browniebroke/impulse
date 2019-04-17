@@ -7,12 +7,13 @@ from graphviz import Digraph  # type: ignore
 import grimp  # type: ignore
 
 
-def draw_graph(module_name: str, format: str) -> None:
+def draw_graph(module_name: str, format: str, view: bool) -> None:
     """
     Create a file showing a graph of the supplied package.
     Args:
         module_name: the package or subpackage name of any importable Python package.
         format: the output format, can be any accepted by graphviz.
+        view: whether to open the rendered file..
     """
     # Add current directory to the path, as this doesn't happen automatically.
     sys.path.insert(0, os.getcwd())
@@ -42,4 +43,4 @@ def draw_graph(module_name: str, format: str) -> None:
 
     source_filename = tempfile.mkstemp()[1]
     print(dot.source)
-    dot.view(filename=source_filename, cleanup=True)
+    dot.render(filename=source_filename, cleanup=True, view=view)
