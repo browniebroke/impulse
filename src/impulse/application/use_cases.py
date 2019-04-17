@@ -7,11 +7,12 @@ from graphviz import Digraph  # type: ignore
 import grimp  # type: ignore
 
 
-def draw_graph(module_name: str) -> None:
+def draw_graph(module_name: str, format: str) -> None:
     """
     Create a file showing a graph of the supplied package.
     Args:
         module_name: the package or subpackage name of any importable Python package.
+        format: the output format, can be any accepted by graphviz.
     """
     # Add current directory to the path, as this doesn't happen automatically.
     sys.path.insert(0, os.getcwd())
@@ -21,7 +22,7 @@ def draw_graph(module_name: str) -> None:
     module_children = graph.find_children(module.name)
 
     dot = Digraph(
-        format='png',
+        format=format,
         node_attr={'fontname': 'helvetica'}
     )
     dot.attr(
@@ -33,7 +34,10 @@ def draw_graph(module_name: str) -> None:
     # Dependencies between children.
     for upstream, downstream in itertools.permutations(module_children, r=2):
         if graph.direct_import_exists(
-                imported=upstream, importer=downstream, as_packages=True):
+                imported=upstream,
+                importer=downstream,
+                as_packages=True,
+        ):
             dot.edge(downstream, upstream)
 
     source_filename = tempfile.mkstemp()[1]
