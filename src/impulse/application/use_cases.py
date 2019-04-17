@@ -35,9 +35,9 @@ def draw_graph(module_name: str, format: str, view: bool) -> None:
     # Dependencies between children.
     for upstream, downstream in itertools.permutations(module_children, r=2):
         if graph.direct_import_exists(
-                imported=upstream,
-                importer=downstream,
-                as_packages=True,
+            imported=upstream,
+            importer=downstream,
+            as_packages=True,
         ):
             dot.edge(downstream, upstream)
 
